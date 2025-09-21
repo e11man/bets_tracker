@@ -36,10 +36,6 @@ export default function ROIAnalytics() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    fetchROIData()
-  }, [fetchROIData])
-
   const fetchROIData = useCallback(async () => {
     try {
       setLoading(true)
@@ -62,6 +58,10 @@ export default function ROIAnalytics() {
       setLoading(false)
     }
   }, [])
+
+  useEffect(() => {
+    fetchROIData()
+  }, [fetchROIData])
 
   const calculateROI = (bets: BetData[]) => {
     const completedBets = bets.filter(bet => bet.result !== 'pending')

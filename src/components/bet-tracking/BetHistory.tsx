@@ -23,7 +23,7 @@ export default function BetHistory() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [filter, setFilter] = useState<'all' | 'pending' | 'won' | 'lost'>('all')
-  const [bulkAction, setBulkAction] = useState<'none' | 'won' | 'lost'>('none')
+  const [bulkAction, setBulkAction] = useState<'none' | 'won' | 'lost' | 'delete'>('none')
   const [searchTerm, setSearchTerm] = useState('')
   const [editingBet, setEditingBet] = useState<number | null>(null)
   const [editForm, setEditForm] = useState<Partial<BetData>>({})
