@@ -190,8 +190,8 @@ export default function ROIAnalytics() {
       }
     }
 
-    // OLD ROI calculation for comparison (based on staked amount)
-    const traditionalROI = totalStakedCompleted > 0 ? (totalProfitLoss / totalStakedCompleted) * 100 : 0
+    // OLD ROI calculation for comparison (based on staked amount) - keeping for future reference
+    // const traditionalROI = totalStakedCompleted > 0 ? (totalProfitLoss / totalStakedCompleted) * 100 : 0
 
     // Calculate cumulative bankroll growth over time - ONLY for completed bets in chronological order
     let cumulativeProfit = 0
@@ -199,7 +199,7 @@ export default function ROIAnalytics() {
     const targetGrowth: number[] = []
 
     // Process only completed bets in chronological order for the graph
-    completedBets.forEach((bet, index) => {
+    completedBets.forEach((bet) => {
       if (bet.result === 'won') {
         cumulativeProfit += bet.potential_payout - bet.stake // Net profit from this bet
       } else if (bet.result === 'lost') {
@@ -584,7 +584,7 @@ export default function ROIAnalytics() {
                   <div className={styles.goalAchievedIcon}>🎉</div>
                   <div className={styles.goalAchievedText}>
                     <h3>Goal Achieved!</h3>
-                    <p>Congratulations! You've reached your $1000 target!</p>
+                    <p>Congratulations! You&apos;ve reached your $1000 target!</p>
                   </div>
                 </div>
               ) : roiData.estimatedBetsToGoal > 0 ? (
