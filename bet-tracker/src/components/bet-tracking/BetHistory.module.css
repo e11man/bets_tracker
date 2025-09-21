@@ -1,0 +1,639 @@
+/* Bet History Styles - Ultra High Readability Card Design */
+.historyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.historyTitle {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1F2937;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.025em;
+}
+
+/* Controls Section */
+.controlsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #F8FAFC;
+  border-radius: 16px;
+  border: 2px solid #E2E8F0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Search Controls */
+.searchControls {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem;
+  border: 2px solid #D1D5DB;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 0.95rem;
+  color: #1F2937;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #25304A;
+  box-shadow: 0 0 0 3px rgba(37, 48, 74, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #9CA3AF;
+}
+
+.clearSearch {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #6B7280;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.clearSearch:hover {
+  background: #F3F4F6;
+  color: #374151;
+}
+
+.filterRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filterControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filterLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1F2937;
+  white-space: nowrap;
+}
+
+.filterSelect {
+  padding: 0.625rem 0.875rem;
+  border: 2px solid #D1D5DB;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.875rem;
+  color: #1F2937;
+  cursor: pointer;
+  min-width: 120px;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #25304A;
+  box-shadow: 0 0 0 3px rgba(37, 48, 74, 0.1);
+}
+
+.bulkControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bulkSelect {
+  padding: 0.625rem 0.875rem;
+  border: 2px solid #D1D5DB;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.875rem;
+  color: #1F2937;
+  cursor: pointer;
+  min-width: 120px;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.bulkButton {
+  padding: 0.625rem 1rem;
+  background: #25304A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(37, 48, 74, 0.3);
+}
+
+.bulkButton:hover:not(:disabled) {
+  background: #1E293B;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 48, 74, 0.4);
+}
+
+.bulkButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Results Info */
+.resultsInfo {
+  font-size: 0.875rem;
+  color: #64748B;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem;
+  background: #F1F5F9;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+}
+
+/* Bet List - Card Design */
+.betList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.betCard {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #E5E7EB;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.betCard:hover {
+  border-color: #25304A;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.betCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem 1rem;
+  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.betCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #25304A;
+}
+
+.betName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editButton,
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  padding: 0.375rem;
+  border-radius: 6px;
+}
+
+.editButton:hover {
+  opacity: 1;
+  background: #E0F2FE;
+  transform: scale(1.1);
+}
+
+.deleteButton:hover {
+  opacity: 1;
+  background: #FEE2E2;
+  transform: scale(1.1);
+}
+
+.betCardContent {
+  padding: 1rem;
+}
+
+.betInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.betInfoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.625rem;
+  background: #F8FAFC;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+}
+
+.betInfoLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.betInfoValue {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.resultSelect {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #D1D5DB;
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.resultSelect:focus {
+  outline: none;
+  border-color: #25304A;
+  box-shadow: 0 0 0 3px rgba(37, 48, 74, 0.1);
+}
+
+.resultSelect.pending {
+  color: #D97706;
+  background: #FEF3C7;
+  border-color: #F59E0B;
+}
+
+.resultSelect.won {
+  color: #059669;
+  background: #D1FAE5;
+  border-color: #10B981;
+}
+
+.resultSelect.lost {
+  color: #DC2626;
+  background: #FEE2E2;
+  border-color: #EF4444;
+}
+
+/* Edit Mode Styles */
+.editCard {
+  background: #F0F9FF;
+  border: 2px solid #0EA5E9;
+  padding: 1rem;
+}
+
+.editHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #E0F2FE;
+}
+
+.editHeader h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0C4A6E;
+  margin: 0;
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.saveButton {
+  padding: 0.5rem 1rem;
+  background: #059669;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveButton:hover {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+.cancelButton {
+  padding: 0.5rem 1rem;
+  background: #6B7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+  background: #4B5563;
+  transform: translateY(-1px);
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.editRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.editField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.editField label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.editInput,
+.editSelect {
+  padding: 0.625rem;
+  border: 2px solid #D1D5DB;
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 0.875rem;
+  color: #1F2937;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.editInput:focus,
+.editSelect:focus {
+  outline: none;
+  border-color: #0EA5E9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.noBets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: #64748B;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+  background: #F8FAFC;
+  border-radius: 12px;
+  border: 2px dashed #D1D5DB;
+}
+
+/* Summary Section */
+.summarySection {
+  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 2px solid #E2E8F0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.summaryStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.summaryStats span {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1F2937;
+  text-align: center;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 2px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading States */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  gap: 1.25rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #E5E7EB;
+  border-top: 3px solid #25304A;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingContainer p {
+  color: #64748B;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Error States */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.errorContainer p {
+  color: #DC2626;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.retryButton {
+  padding: 0.75rem 1.5rem;
+  background: #25304A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(37, 48, 74, 0.3);
+}
+
+.retryButton:hover {
+  background: #1E293B;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 48, 74, 0.4);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .betInfoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .summaryStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .editRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .historyTitle {
+    font-size: 1.375rem;
+  }
+  
+  .filterRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .bulkControls {
+    justify-content: space-between;
+  }
+  
+  .betCardHeader {
+    padding: 0.75rem;
+  }
+  
+  .betName {
+    font-size: 0.95rem;
+  }
+  
+  .betCardContent {
+    padding: 0.875rem;
+  }
+  
+  .betInfoGrid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .betInfoItem {
+    padding: 0.5rem;
+  }
+  
+  .betInfoLabel {
+    font-size: 0.65rem;
+  }
+  
+  .betInfoValue {
+    font-size: 0.85rem;
+  }
+  
+  .summaryStats {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .controlsSection {
+    padding: 0.875rem;
+  }
+  
+  .betCard {
+    border-radius: 10px;
+  }
+  
+  .betCardHeader {
+    padding: 0.625rem;
+  }
+  
+  .betName {
+    font-size: 0.9rem;
+  }
+  
+  .betCardContent {
+    padding: 0.75rem;
+  }
+  
+  .editCard {
+    padding: 0.875rem;
+  }
+}
+
+/* Large Desktop - Show More Columns */
+@media (min-width: 1200px) {
+  .betInfoGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

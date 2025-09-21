@@ -1,0 +1,27 @@
+{
+  "bets": [
+    {
+      "date": "2025-09-20",
+      "description": "Test Bet",
+      "amount": 10,
+      "multiplier": 2,
+      "result": "Pending",
+      "sportsbook": "PrizePicks",
+      "id": "test123",
+      "createdAt": "2025-09-20T16:00:00.000Z"
+    }
+  ],
+  "bankroll": {
+    "startingAmount": 100,
+    "currentAmount": 100,
+    "profitGoal": 500,
+    "maxRiskPercentage": 5,
+    "stopLossThreshold": 50,
+    "sessionStartDate": "2025-09-20T15:09:40.308Z"
+  },
+  "settings": {
+    "darkMode": true,
+    "calculationMethod": "fixed"
+  },
+  "lastUpdated": "2025-09-20T16:00:00.000Z"
+}

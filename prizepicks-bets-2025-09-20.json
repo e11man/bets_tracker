@@ -1,0 +1,138 @@
+{
+  "bets": [
+    {
+      "date": "2025-09-20",
+      "description": "Texans ML",
+      "amount": 4,
+      "multiplier": 1.95,
+      "result": "Pending",
+      "sportsbook": "Fliff",
+      "id": "17583851940009xbscdmcg",
+      "createdAt": "2025-09-20T16:19:54.000Z"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "USC 1H, Oklahoma ML",
+      "amount": 7,
+      "multiplier": 1.56,
+      "result": "Pending",
+      "sportsbook": "Fliff",
+      "id": "1758385160901ck1r4fsr9",
+      "createdAt": "2025-09-20T16:19:20.901Z"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Oklahoma -8.5",
+      "amount": 1,
+      "multiplier": 2.15,
+      "result": "Pending",
+      "sportsbook": "Fliff",
+      "id": "17583851165408elx4tyf2",
+      "createdAt": "2025-09-20T16:18:36.540Z"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Christian McCaffery ANY TD",
+      "amount": 1.75,
+      "multiplier": 1.5,
+      "result": "Pending",
+      "sportsbook": "Fliff",
+      "id": "1758383532944n01n0wjkx",
+      "createdAt": "2025-09-20T15:52:12.944Z"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Arsenal ML, Barcelona ML",
+      "amount": 1,
+      "multiplier": 2.12,
+      "result": "Pending",
+      "sportsbook": "Fliff",
+      "id": "1758383470294lq9541s88",
+      "createdAt": "2025-09-20T15:51:10.294Z"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Jonathan Taylor > 84.5 rush + rec yards, Bijan Robinson 82.5 > rushing yards, Sam Darnold > 189.5 pass yards",
+      "amount": 5,
+      "multiplier": 4.32,
+      "result": "Pending",
+      "sportsbook": "Underdog",
+      "id": "17583833484427fhjjuhjy",
+      "createdAt": "2025-09-20T15:49:08.442Z"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Bijan Robinson anytime touchdown",
+      "amount": 5,
+      "multiplier": 2.25,
+      "result": "Pending",
+      "id": "1758381828356jc77i2z0l",
+      "createdAt": "2025-09-20T15:23:48.356Z",
+      "sportsbook": "PrizePicks"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Aaron Rodgers > 1.5 TD",
+      "amount": 1,
+      "multiplier": 3.5,
+      "result": "Pending",
+      "id": "1758381792621znrehd6db",
+      "createdAt": "2025-09-20T15:23:12.621Z",
+      "sportsbook": "PrizePicks"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Sam Donald > 179.5 passing yards",
+      "amount": 1,
+      "multiplier": 2.25,
+      "result": "Pending",
+      "id": "1758381765005b76uem3lh",
+      "createdAt": "2025-09-20T15:22:45.005Z",
+      "sportsbook": "PrizePicks"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Jonathan Taylor > 74.5 rushing yards",
+      "amount": 1,
+      "multiplier": 2.24,
+      "result": "Pending",
+      "id": "1758381737321fi7197fgl",
+      "createdAt": "2025-09-20T15:22:17.321Z",
+      "sportsbook": "PrizePicks"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Mahomes > .5 yards and Rome Odunze > 4.5 receptions",
+      "amount": 1,
+      "multiplier": 2.2,
+      "result": "Pending",
+      "id": "1758381713487di2gbu7pa",
+      "createdAt": "2025-09-20T15:21:53.487Z",
+      "sportsbook": "PrizePicks"
+    },
+    {
+      "date": "2025-09-20",
+      "description": "Mahomes > 0.5 yards and D andres Swift > 1.5 receptions",
+      "amount": 1,
+      "multiplier": 2.25,
+      "result": "Pending",
+      "payout": 2.25,
+      "id": "1758381545618ojrjzf7ov",
+      "createdAt": "2025-09-20T15:19:05.618Z",
+      "sportsbook": "PrizePicks"
+    }
+  ],
+  "bankroll": {
+    "startingAmount": 100,
+    "currentAmount": 100,
+    "profitGoal": 500,
+    "maxRiskPercentage": 5,
+    "stopLossThreshold": 50,
+    "sessionStartDate": "2025-09-20T15:09:40.308Z"
+  },
+  "settings": {
+    "darkMode": true,
+    "calculationMethod": "fixed"
+  },
+  "lastUpdated": "2025-09-20T16:24:22.451Z"
+}

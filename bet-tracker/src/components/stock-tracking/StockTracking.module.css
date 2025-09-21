@@ -1,0 +1,93 @@
+/* Stock Tracking Container Styles */
+.stockTrackingContainer {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.tabHeader {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #E5E7EB;
+  background: #F9FAFB;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+.tabButton {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: transparent;
+  color: #6B7280;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  flex-grow: 1;
+  max-width: 180px;
+}
+
+.tabButton:hover {
+  color: #059669;
+  background: #F0FDF4;
+}
+
+.tabButton.active {
+  color: #059669;
+  background: #DCFCE7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.tabButton.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #059669 0%, #10B981 100%);
+  animation: tabUnderline 0.3s ease-out forwards;
+}
+
+@keyframes tabUnderline {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.tabContent {
+  padding: 1.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .tabHeader {
+    flex-direction: column;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .tabButton {
+    max-width: none;
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .tabContent {
+    padding: 1rem;
+  }
+}
