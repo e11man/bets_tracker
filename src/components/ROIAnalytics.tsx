@@ -37,6 +37,13 @@ interface ROIData {
   averageYearlyReturn: number
   timeInMarketDays: number
   winRate: number
+  // Goal tracking fields
+  goalAmount: number
+  averageWager: number
+  averageMultiplier: number
+  estimatedBetsToGoal: number
+  projectedDaysToGoal: number
+  projectedFinalBankroll: number
 }
 
 export default function ROIAnalytics() {
@@ -125,6 +132,64 @@ export default function ROIAnalytics() {
     const wonBets = completedBets.filter(bet => bet.result === 'won').length
     const winRate = completedBetsCount > 0 ? (wonBets / completedBetsCount) * 100 : 0
 
+    // GOAL TRACKING CALCULATIONS
+    const GOAL_AMOUNT = 1000.00
+    
+    // Calculate average wager and multiplier from completed bets
+    let averageWager = 0
+    let averageMultiplier = 0
+    let estimatedBetsToGoal = 0
+    let projectedDaysToGoal = 0
+    let projectedFinalBankroll = currentBankroll
+
+    if (completedBetsCount > 0) {
+      averageWager = totalStakedCompleted / completedBetsCount
+      averageMultiplier = completedBets.reduce((sum, bet) => sum + bet.odds, 0) / completedBetsCount
+      
+      // Calculate expected value per bet
+      const winProbability = winRate / 100
+      const lossProbability = 1 - winProbability
+      
+      // Expected value = (win_prob * payout) - (loss_prob * stake)
+      // For 5% bankroll strategy, wager = 0.05 * current_bankroll
+      // Payout = wager * multiplier, Loss = wager
+      const expectedValuePercentage = (winProbability * averageMultiplier) - lossProbability
+      
+      if (expectedValuePercentage > 0 && currentBankroll < GOAL_AMOUNT) {
+        // Monte Carlo simulation for 5% bankroll strategy
+        let simulatedBankroll = currentBankroll
+        let betsSimulated = 0
+        const maxBets = 1000 // Safety limit
+        
+        while (simulatedBankroll < GOAL_AMOUNT && betsSimulated < maxBets) {
+          const wagerAmount = simulatedBankroll * 0.05
+          
+          // Simulate bet outcome based on win rate
+          if (Math.random() < winProbability) {
+            // Win: add profit (wager * (multiplier - 1))
+            simulatedBankroll += wagerAmount * (averageMultiplier - 1)
+          } else {
+            // Loss: subtract wager
+            simulatedBankroll -= wagerAmount
+          }
+          
+          betsSimulated++
+          
+          // Safety check to prevent infinite loop
+          if (simulatedBankroll <= 0) break
+        }
+        
+        estimatedBetsToGoal = betsSimulated < maxBets ? betsSimulated : -1
+        projectedFinalBankroll = simulatedBankroll
+        
+        // Estimate days based on current betting frequency
+        if (timeInMarketDays > 0 && totalBets > 0) {
+          const betsPerDay = totalBets / timeInMarketDays
+          projectedDaysToGoal = betsPerDay > 0 ? Math.ceil(estimatedBetsToGoal / betsPerDay) : -1
+        }
+      }
+    }
+
     // OLD ROI calculation for comparison (based on staked amount)
     const traditionalROI = totalStakedCompleted > 0 ? (totalProfitLoss / totalStakedCompleted) * 100 : 0
 
@@ -169,7 +234,14 @@ export default function ROIAnalytics() {
       bankrollGrowthPercentage,
       averageYearlyReturn,
       timeInMarketDays,
-      winRate
+      winRate,
+      // Goal tracking fields
+      goalAmount: GOAL_AMOUNT,
+      averageWager,
+      averageMultiplier,
+      estimatedBetsToGoal,
+      projectedDaysToGoal,
+      projectedFinalBankroll
     })
   }
 
@@ -468,6 +540,107 @@ export default function ROIAnalytics() {
           <p><strong>New Accurate Calculation:</strong> ROI now based on your $100 starting bankroll, not total staked amount</p>
           <p>This gives you the true percentage growth of your initial investment</p>
         </div>
+      </div>
+
+      {/* Goal Tracking */}
+      <div className={styles.section}>
+        <h4 className={styles.sectionTitle}>🎯 $1000 Goal Tracker</h4>
+        {roiData.completedBetsCount > 0 ? (
+          <>
+            <div className={styles.goalProgress}>
+              <div className={styles.progressBar}>
+                <div 
+                  className={styles.progressFill} 
+                  style={{ width: `${Math.min((roiData.currentBankroll / roiData.goalAmount) * 100, 100)}%` }}
+                ></div>
+              </div>
+              <div className={styles.progressText}>
+                ${roiData.currentBankroll.toFixed(2)} / ${roiData.goalAmount.toFixed(2)} 
+                ({((roiData.currentBankroll / roiData.goalAmount) * 100).toFixed(1)}%)
+              </div>
+            </div>
+
+            <div className={styles.goalMetrics}>
+              <div className={styles.goalCard}>
+                <div className={styles.goalLabel}>Average Wager</div>
+                <div className={styles.goalValue}>${roiData.averageWager.toFixed(2)}</div>
+                <div className={styles.goalSubtext}>Historical average</div>
+              </div>
+              <div className={styles.goalCard}>
+                <div className={styles.goalLabel}>Average Multiplier</div>
+                <div className={styles.goalValue}>{roiData.averageMultiplier.toFixed(2)}x</div>
+                <div className={styles.goalSubtext}>Odds average</div>
+              </div>
+              <div className={styles.goalCard}>
+                <div className={styles.goalLabel}>Win Rate</div>
+                <div className={styles.goalValue}>{roiData.winRate.toFixed(1)}%</div>
+                <div className={styles.goalSubtext}>Success rate</div>
+              </div>
+            </div>
+
+            <div className={styles.goalProjection}>
+              {roiData.currentBankroll >= roiData.goalAmount ? (
+                <div className={styles.goalAchieved}>
+                  <div className={styles.goalAchievedIcon}>🎉</div>
+                  <div className={styles.goalAchievedText}>
+                    <h3>Goal Achieved!</h3>
+                    <p>Congratulations! You've reached your $1000 target!</p>
+                  </div>
+                </div>
+              ) : roiData.estimatedBetsToGoal > 0 ? (
+                <div className={styles.goalEstimate}>
+                  <div className={styles.goalEstimateHeader}>
+                    <h3>Projection (5% Bankroll Strategy)</h3>
+                  </div>
+                  <div className={styles.goalEstimateGrid}>
+                    <div className={styles.goalEstimateItem}>
+                      <div className={styles.goalEstimateLabel}>Estimated Bets Needed</div>
+                      <div className={styles.goalEstimateValue}>{roiData.estimatedBetsToGoal} bets</div>
+                    </div>
+                    <div className={styles.goalEstimateItem}>
+                      <div className={styles.goalEstimateLabel}>Projected Timeline</div>
+                      <div className={styles.goalEstimateValue}>
+                        {roiData.projectedDaysToGoal > 0 
+                          ? `~${roiData.projectedDaysToGoal} days`
+                          : 'Calculating...'
+                        }
+                      </div>
+                    </div>
+                    <div className={styles.goalEstimateItem}>
+                      <div className={styles.goalEstimateLabel}>Next Bet Size (5%)</div>
+                      <div className={styles.goalEstimateValue}>
+                        ${(roiData.currentBankroll * 0.05).toFixed(2)}
+                      </div>
+                    </div>
+                    <div className={styles.goalEstimateItem}>
+                      <div className={styles.goalEstimateLabel}>Expected Final</div>
+                      <div className={styles.goalEstimateValue}>
+                        ${roiData.projectedFinalBankroll.toFixed(2)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.goalNote}>
+                    <p><strong>Note:</strong> Projections based on your historical win rate ({roiData.winRate.toFixed(1)}%) and average multiplier ({roiData.averageMultiplier.toFixed(2)}x)</p>
+                    <p>Using 5% bankroll strategy - bet size increases as bankroll grows</p>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.goalWarning}>
+                  <div className={styles.goalWarningIcon}>⚠️</div>
+                  <div className={styles.goalWarningText}>
+                    <h3>Goal May Not Be Achievable</h3>
+                    <p>Based on current performance, the expected value is negative or insufficient.</p>
+                    <p>Consider improving win rate or finding better odds to reach your goal.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className={styles.goalNoData}>
+            <p>Complete some bets to see goal projections</p>
+          </div>
+        )}
       </div>
 
       {/* Pending Bets */}
