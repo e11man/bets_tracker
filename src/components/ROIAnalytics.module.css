@@ -185,6 +185,13 @@
   color: #DC2626;
 }
 
+.roiSubtext {
+  font-size: 0.75rem;
+  color: #64748B;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
 .roiNote {
   margin-top: 0.75rem;
   padding: 0.75rem;
