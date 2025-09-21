@@ -108,11 +108,16 @@ export default function ROIAnalytics() {
       const today = new Date()
       timeInMarketDays = Math.max(1, Math.floor((today.getTime() - firstBetDate.getTime()) / (1000 * 60 * 60 * 24)))
       
-      // Calculate annualized return
+      // Calculate annualized return - only if we have enough data (at least 7 days)
       const yearsInMarket = timeInMarketDays / 365.25
-      if (yearsInMarket > 0 && currentBankroll > 0) {
+      if (timeInMarketDays >= 7 && yearsInMarket > 0 && currentBankroll > 0) {
         // Compound annual growth rate (CAGR) formula: (Ending Value / Beginning Value)^(1/years) - 1
-        averageYearlyReturn = (Math.pow(currentBankroll / STARTING_BANKROLL, 1 / yearsInMarket) - 1) * 100
+        const cagr = (Math.pow(currentBankroll / STARTING_BANKROLL, 1 / yearsInMarket) - 1) * 100
+        // Cap at reasonable limits (-99% to +10000%)
+        averageYearlyReturn = Math.max(-99, Math.min(10000, cagr))
+      } else {
+        // For periods less than 7 days, don't calculate annualized return
+        averageYearlyReturn = 0
       }
     }
 
@@ -372,7 +377,10 @@ export default function ROIAnalytics() {
           <div className={styles.metricCard}>
             <div className={styles.metricLabel}>Annualized Return</div>
             <div className={`${styles.metricValue} ${roiData.averageYearlyReturn >= 0 ? styles.positive : styles.negative}`}>
-              {roiData.averageYearlyReturn >= 0 ? '+' : ''}{roiData.averageYearlyReturn.toFixed(2)}%
+              {roiData.timeInMarketDays < 7 
+                ? 'N/A (< 7 days)'
+                : `${roiData.averageYearlyReturn >= 0 ? '+' : ''}${roiData.averageYearlyReturn.toFixed(2)}%`
+              }
             </div>
           </div>
           <div className={styles.metricCard}>
@@ -434,10 +442,16 @@ export default function ROIAnalytics() {
           <div className={styles.roiCard}>
             <div className={styles.roiLabel}>Annualized Return</div>
             <div className={`${styles.roiValue} ${roiData.averageYearlyReturn >= 0 ? styles.positive : styles.negative}`}>
-              {roiData.averageYearlyReturn >= 0 ? '+' : ''}{roiData.averageYearlyReturn.toFixed(2)}%
+              {roiData.timeInMarketDays < 7 
+                ? 'N/A'
+                : `${roiData.averageYearlyReturn >= 0 ? '+' : ''}${roiData.averageYearlyReturn.toFixed(2)}%`
+              }
             </div>
             <div className={styles.roiSubtext}>
-              Based on {roiData.timeInMarketDays} days
+              {roiData.timeInMarketDays < 7 
+                ? `Need 7+ days (currently ${roiData.timeInMarketDays})`
+                : `Based on ${roiData.timeInMarketDays} days`
+              }
             </div>
           </div>
           <div className={styles.roiCard}>
