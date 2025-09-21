@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import styles from './BetHistory.module.css'
 
@@ -57,7 +57,7 @@ export default function BetHistory() {
     }
   }
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = bets
 
     // Apply status filter
@@ -75,7 +75,7 @@ export default function BetHistory() {
     }
 
     setFilteredBets(filtered)
-  }
+  }, [bets, filter, searchTerm])
 
   const handleSelectBet = (betId: number) => {
     const newSelected = new Set(selectedBets)
@@ -251,7 +251,7 @@ export default function BetHistory() {
             <label className={styles.filterLabel}>Filter:</label>
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
+              onChange={(e) => setFilter(e.target.value as 'all' | 'pending' | 'won' | 'lost')}
               className={styles.filterSelect}
             >
               <option value="all">All Bets</option>
@@ -265,7 +265,7 @@ export default function BetHistory() {
             <div className={styles.bulkControls}>
               <select
                 value={bulkAction}
-                onChange={(e) => setBulkAction(e.target.value as any)}
+                onChange={(e) => setBulkAction(e.target.value as 'won' | 'lost' | 'delete')}
                 className={styles.bulkSelect}
               >
                 <option value="none">Bulk Action</option>
@@ -287,7 +287,7 @@ export default function BetHistory() {
       {/* Results Count */}
       <div className={styles.resultsInfo}>
         Showing {filteredBets.length} of {bets.length} bets
-        {searchTerm && <span> for "{searchTerm}"</span>}
+        {searchTerm && <span> for &quot;{searchTerm}&quot;</span>}
       </div>
 
       {/* Bet List */}
@@ -346,7 +346,7 @@ export default function BetHistory() {
                           <label>Result</label>
                           <select
                             value={editForm.result || ''}
-                            onChange={(e) => setEditForm({...editForm, result: e.target.value as any})}
+                            onChange={(e) => setEditForm({...editForm, result: e.target.value as 'pending' | 'won' | 'lost'})}
                             className={styles.editSelect}
                           >
                             <option value="pending">Pending</option>
@@ -450,7 +450,7 @@ export default function BetHistory() {
                           <span className={styles.betInfoLabel}>Result</span>
                           <select
                             value={bet.result}
-                            onChange={(e) => handleUpdateResult(bet.id, e.target.value as any)}
+                            onChange={(e) => handleUpdateResult(bet.id, e.target.value as 'pending' | 'won' | 'lost')}
                             className={`${styles.resultSelect} ${styles[bet.result]}`}
                           >
                             <option value="pending">Pending</option>

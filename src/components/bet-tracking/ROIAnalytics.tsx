@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import styles from './ROIAnalytics.module.css'
 
@@ -38,9 +38,9 @@ export default function ROIAnalytics() {
 
   useEffect(() => {
     fetchROIData()
-  }, [])
+  }, [fetchROIData])
 
-  const fetchROIData = async () => {
+  const fetchROIData = useCallback(async () => {
     try {
       setLoading(true)
       setError('')
@@ -61,7 +61,7 @@ export default function ROIAnalytics() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   const calculateROI = (bets: BetData[]) => {
     const completedBets = bets.filter(bet => bet.result !== 'pending')
