@@ -22,11 +22,17 @@ export interface Stock {
   id?: number
   symbol: string
   company_name: string
-  action: 'buy' | 'sell'
+  trade_type: 'day_trade' | 'buy_only' | 'sell_only'
   quantity: number
-  price: number
-  total_value: number
+  buy_price?: number
+  sell_price?: number
+  buy_total?: number
+  sell_total?: number
+  profit_loss?: number
+  profit_loss_percentage?: number
   trade_date: string
+  buy_time?: string
+  sell_time?: string
   notes?: string
   created_at?: string
   updated_at?: string

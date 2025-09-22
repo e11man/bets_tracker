@@ -86,6 +86,22 @@
   border: 1px solid #FECACA;
 }
 
+.dayTradeAction {
+  background: #EDE9FE;
+  color: #5B21B6;
+  border: 1px solid #C4B5FD;
+}
+
+.profitValue {
+  color: #059669;
+  font-weight: 800;
+}
+
+.lossValue {
+  color: #DC2626;
+  font-weight: 800;
+}
+
 .tradeCardContent {
   padding: 1rem;
 }

@@ -149,6 +149,21 @@
   font-weight: 800;
 }
 
+.dayTradeHighlight {
+  color: #7C3AED;
+  font-weight: 800;
+}
+
+.profitHighlight {
+  color: #059669;
+  font-weight: 800;
+}
+
+.lossHighlight {
+  color: #DC2626;
+  font-weight: 800;
+}
+
 .submitButton {
   width: 100%;
   padding: 1rem;

@@ -8,11 +8,17 @@ interface StockData {
   id: number
   symbol: string
   company_name: string
-  action: 'buy' | 'sell'
+  trade_type: 'day_trade' | 'buy_only' | 'sell_only'
   quantity: number
-  price: number
-  total_value: number
+  buy_price?: number
+  sell_price?: number
+  buy_total?: number
+  sell_total?: number
+  profit_loss?: number
+  profit_loss_percentage?: number
   trade_date: string
+  buy_time?: string
+  sell_time?: string
   notes?: string
   created_at: string
 }
@@ -94,8 +100,11 @@ export default function StockHistory() {
                     <span className={styles.tradeSymbol}>{trade.symbol}</span>
                     <span className={styles.tradeCompany}>{trade.company_name}</span>
                   </div>
-                  <div className={`${styles.tradeAction} ${trade.action === 'buy' ? styles.buyAction : styles.sellAction}`}>
-                    {trade.action.toUpperCase()}
+                  <div className={`${styles.tradeAction} ${
+                    trade.trade_type === 'day_trade' ? styles.dayTradeAction : 
+                    trade.trade_type === 'buy_only' ? styles.buyAction : styles.sellAction
+                  }`}>
+                    {trade.trade_type.replace('_', ' ').toUpperCase()}
                   </div>
                 </div>
 
@@ -106,15 +115,86 @@ export default function StockHistory() {
                       <span className={styles.tradeInfoValue}>{trade.quantity}</span>
                     </div>
                     
-                    <div className={styles.tradeInfoItem}>
-                      <span className={styles.tradeInfoLabel}>Price</span>
-                      <span className={styles.tradeInfoValue}>${trade.price.toFixed(2)}</span>
-                    </div>
+                    {trade.trade_type === 'day_trade' && (
+                      <>
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Buy Price</span>
+                          <span className={styles.tradeInfoValue}>${trade.buy_price?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Sell Price</span>
+                          <span className={styles.tradeInfoValue}>${trade.sell_price?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Buy Total</span>
+                          <span className={styles.tradeInfoValue}>${trade.buy_total?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Sell Total</span>
+                          <span className={styles.tradeInfoValue}>${trade.sell_total?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Profit/Loss</span>
+                          <span className={`${styles.tradeInfoValue} ${
+                            trade.profit_loss && trade.profit_loss >= 0 ? styles.profitValue : styles.lossValue
+                          }`}>
+                            ${trade.profit_loss?.toFixed(2)} ({trade.profit_loss_percentage?.toFixed(2)}%)
+                          </span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Buy Time</span>
+                          <span className={styles.tradeInfoValue}>{trade.buy_time}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Sell Time</span>
+                          <span className={styles.tradeInfoValue}>{trade.sell_time}</span>
+                        </div>
+                      </>
+                    )}
                     
-                    <div className={styles.tradeInfoItem}>
-                      <span className={styles.tradeInfoLabel}>Total Value</span>
-                      <span className={styles.tradeInfoValue}>${trade.total_value.toFixed(2)}</span>
-                    </div>
+                    {trade.trade_type === 'buy_only' && (
+                      <>
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Buy Price</span>
+                          <span className={styles.tradeInfoValue}>${trade.buy_price?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Buy Total</span>
+                          <span className={styles.tradeInfoValue}>${trade.buy_total?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Buy Time</span>
+                          <span className={styles.tradeInfoValue}>{trade.buy_time}</span>
+                        </div>
+                      </>
+                    )}
+                    
+                    {trade.trade_type === 'sell_only' && (
+                      <>
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Sell Price</span>
+                          <span className={styles.tradeInfoValue}>${trade.sell_price?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Sell Total</span>
+                          <span className={styles.tradeInfoValue}>${trade.sell_total?.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className={styles.tradeInfoItem}>
+                          <span className={styles.tradeInfoLabel}>Sell Time</span>
+                          <span className={styles.tradeInfoValue}>{trade.sell_time}</span>
+                        </div>
+                      </>
+                    )}
                     
                     <div className={styles.tradeInfoItem}>
                       <span className={styles.tradeInfoLabel}>Date</span>
@@ -139,8 +219,9 @@ export default function StockHistory() {
       <div className={styles.summarySection}>
         <div className={styles.summaryStats}>
           <span>Total Trades: {trades.length}</span>
-          <span>Buy Orders: {trades.filter(t => t.action === 'buy').length}</span>
-          <span>Sell Orders: {trades.filter(t => t.action === 'sell').length}</span>
+          <span>Day Trades: {trades.filter(t => t.trade_type === 'day_trade').length}</span>
+          <span>Buy Only: {trades.filter(t => t.trade_type === 'buy_only').length}</span>
+          <span>Sell Only: {trades.filter(t => t.trade_type === 'sell_only').length}</span>
         </div>
       </div>
     </div>

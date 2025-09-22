@@ -8,11 +8,17 @@ interface StockData {
   id: number
   symbol: string
   company_name: string
-  action: 'buy' | 'sell'
+  trade_type: 'day_trade' | 'buy_only' | 'sell_only'
   quantity: number
-  price: number
-  total_value: number
+  buy_price?: number
+  sell_price?: number
+  buy_total?: number
+  sell_total?: number
+  profit_loss?: number
+  profit_loss_percentage?: number
   trade_date: string
+  buy_time?: string
+  sell_time?: string
   notes?: string
   created_at: string
 }
@@ -39,6 +45,7 @@ interface PerformanceData {
   cumulativeROI: number[]
   targetROI: number[]
   tradeDates: string[]
+  averageTradePercentage?: number
 }
 
 export default function StockAnalytics() {
@@ -74,17 +81,9 @@ export default function StockAnalytics() {
   }
 
   const calculatePerformance = (trades: StockData[]) => {
-    // Group trades by symbol and date to calculate actual trade profits
-    const tradeGroups: { [key: string]: { buy: StockData[], sell: StockData[] } } = {}
+    // Filter to only day trades for now (we can expand this later)
+    const dayTrades = trades.filter(trade => trade.trade_type === 'day_trade')
     
-    trades.forEach(trade => {
-      const key = `${trade.symbol}_${trade.trade_date}`
-      if (!tradeGroups[key]) {
-        tradeGroups[key] = { buy: [], sell: [] }
-      }
-      tradeGroups[key][trade.action].push(trade)
-    })
-
     // Calculate individual trade profits
     const tradeProfits: TradeProfit[] = []
     let totalBuyValue = 0
@@ -94,45 +93,51 @@ export default function StockAnalytics() {
     const cumulativeROI: number[] = []
     const targetROI: number[] = []
     const tradeDates: string[] = []
+    const tradePercentages: number[] = []
 
-    Object.values(tradeGroups).forEach(group => {
-      if (group.buy.length > 0 && group.sell.length > 0) {
-        const buyValue = group.buy.reduce((sum, trade) => sum + trade.total_value, 0)
-        const sellValue = group.sell.reduce((sum, trade) => sum + trade.total_value, 0)
-        const profit = sellValue - buyValue
-        const percentage = buyValue > 0 ? (profit / buyValue) * 100 : 0
+    dayTrades.forEach(trade => {
+      if (trade.buy_total && trade.sell_total && trade.profit_loss !== undefined) {
+        const profit = trade.profit_loss
+        const percentage = trade.profit_loss_percentage || 0
         
         tradeProfits.push({
-          symbol: group.buy[0].symbol,
-          trade_date: group.buy[0].trade_date,
+          symbol: trade.symbol,
+          trade_date: trade.trade_date,
           profit,
           percentage,
-          buyValue,
-          sellValue
+          buyValue: trade.buy_total,
+          sellValue: trade.sell_total
         })
 
-        totalBuyValue += buyValue
-        totalSellValue += sellValue
+        // Store individual trade percentages for averaging
+        tradePercentages.push(percentage)
+
+        totalBuyValue += trade.buy_total
+        totalSellValue += trade.sell_total
         
         // Calculate cumulative ROI
-        cumulativeCapital += buyValue
+        cumulativeCapital += trade.buy_total
         cumulativeProfit += profit
         cumulativeROI.push(cumulativeCapital > 0 ? (cumulativeProfit / cumulativeCapital) * 100 : 0)
         
         // Calculate 5% annual target (assuming ~250 trading days per year)
-        const daysSinceStart = Math.max(1, Math.floor((new Date(group.buy[0].trade_date).getTime() - new Date('2025-09-04').getTime()) / (1000 * 60 * 60 * 24)))
+        const daysSinceStart = Math.max(1, Math.floor((new Date(trade.trade_date).getTime() - new Date('2025-09-04').getTime()) / (1000 * 60 * 60 * 24)))
         const annualTarget = 5.0
         const dailyTarget = annualTarget / 250
         const targetGrowth = dailyTarget * daysSinceStart
         targetROI.push(Math.min(targetGrowth, annualTarget))
         
-        tradeDates.push(group.buy[0].trade_date)
+        tradeDates.push(trade.trade_date)
       }
     })
 
     const netProfit = totalSellValue - totalBuyValue
     const profitableTrades = tradeProfits.filter(trade => trade.profit > 0).length
     const winRate = tradeProfits.length > 0 ? (profitableTrades / tradeProfits.length) * 100 : 0
+    
+    // Calculate average percentage per trade (arithmetic mean of all trade percentages)
+    const averageTradePercentage = tradePercentages.length > 0 ? 
+      tradePercentages.reduce((sum, pct) => sum + pct, 0) / tradePercentages.length : 0
 
     setPerformanceData({
       totalTrades: tradeProfits.length,
@@ -146,7 +151,8 @@ export default function StockAnalytics() {
       tradeProfits,
       cumulativeROI,
       targetROI,
-      tradeDates
+      tradeDates,
+      averageTradePercentage // Add this new field
     })
   }
 
@@ -342,19 +348,47 @@ export default function StockAnalytics() {
             </div>
           </div>
           <div className={styles.metricCard}>
-            <div className={styles.metricLabel}>Overall ROI</div>
+            <div className={styles.metricLabel}>Average Win %</div>
             <div className={`${styles.metricValue} ${performanceData.netProfit >= 0 ? styles.positive : styles.negative}`}>
-              {performanceData.totalBuyValue > 0 ? ((performanceData.netProfit / performanceData.totalBuyValue) * 100).toFixed(2) : 0}%
+              {performanceData.averageTradePercentage?.toFixed(2) || '0.00'}%
+            </div>
+          </div>
+          <div className={styles.metricCard}>
+            <div className={styles.metricLabel}>$1500 Daily for Year</div>
+            <div className={`${styles.metricValue} ${performanceData.netProfit >= 0 ? styles.positive : styles.negative}`}>
+              {(() => {
+                if (!performanceData.averageTradePercentage) return '$0.00'
+                // Use actual average trade percentage
+                const dailyRate = performanceData.averageTradePercentage / 100
+                // Calculate what $1500 would grow to after 252 trading days
+                const finalAmount = 1500 * Math.pow(1 + dailyRate, 252)
+                const totalProfit = finalAmount - 1500
+                return `$${totalProfit.toFixed(2)}`
+              })()}
+            </div>
+          </div>
+          <div className={styles.metricCard}>
+            <div className={styles.metricLabel}>Yearly % Return</div>
+            <div className={`${styles.metricValue} ${performanceData.netProfit >= 0 ? styles.positive : styles.negative}`}>
+              {(() => {
+                if (!performanceData.averageTradePercentage) return '0%'
+                // Use actual average trade percentage
+                const dailyRate = performanceData.averageTradePercentage / 100
+                // Calculate total percentage return for the year
+                const yearlyReturnPercent = (Math.pow(1 + dailyRate, 252) - 1) * 100
+                return yearlyReturnPercent.toFixed(1) + '%'
+              })()}
             </div>
           </div>
           <div className={styles.metricCard}>
             <div className={styles.metricLabel}>Annualized ROI</div>
             <div className={`${styles.metricValue} ${performanceData.netProfit >= 0 ? styles.positive : styles.negative}`}>
               {(() => {
-                if (performanceData.totalBuyValue <= 0) return '0%'
-                const daysSinceStart = Math.max(1, Math.floor((new Date().getTime() - new Date('2025-09-04').getTime()) / (1000 * 60 * 60 * 24)))
-                const dailyROI = (performanceData.netProfit / performanceData.totalBuyValue)
-                const annualizedROI = (Math.pow(1 + dailyROI, 365 / daysSinceStart) - 1) * 100
+                if (!performanceData.averageTradePercentage) return '0%'
+                // Use actual average trade percentage
+                const dailyRate = performanceData.averageTradePercentage / 100
+                // Apply compounding formula: [(1 + daily rate)^252 - 1] * 100
+                const annualizedROI = (Math.pow(1 + dailyRate, 252) - 1) * 100
                 return annualizedROI.toFixed(2) + '%'
               })()}
             </div>
